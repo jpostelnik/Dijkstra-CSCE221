@@ -96,6 +96,7 @@ public:
         // cout << "size: " << h.size() << endl;
         // cout << "start: " << start << endl;
         v.at(start)->distanceTo = 0;
+        h.update(v.at(start)->locator);
         // cout << v.at(start)->label << " distance: " << v.at(start)->distanceTo << endl;
 
         while (!h.isEmpty())
