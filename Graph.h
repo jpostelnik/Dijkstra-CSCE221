@@ -53,17 +53,69 @@ public:
 
     ~Graph()
     {
+        // TODO
+        for (int i = 0; i < v.size(); i++)
+        {
+            delete v.at(i);
+        }
+        for (int i = 0; i < e.size(); i++)
+        {
+            delete e.at(i);
+        }
     }
 
     // TODO: complete rule of 3
     // copy constructor
     Graph(const Graph &g)
     {
+
+        for (size_t i = 0; i < v.size(); i++)
+        {
+            v.push_back(new Vertex(g.v.at(i)->label));
+            /* code */
+        }
+        for (size_t i = 0; i < e.size(); i++)
+        {
+            Edge *newEdge = new Edge(g.e.at(i)->v1, g.e.at(i)->v2, g.e.at(i)->weight);
+            e.push_back(newEdge);
+            v.at(g.e.at(i)->v1->label)->edges.push_back(newEdge);
+            v.at(g.e.at(i)->v2->label)->edges.push_back(newEdge);
+            /* code */
+        }
+    }
+
+    // assignment operator
+    Graph &operator=(const Graph &g)
+    {
         if (this != &g)
         {
-            v = g.v;
-            e = g.e;
+            for (size_t i = 0; i < v.size(); i++)
+            {
+                delete v.at(i);
+                /* code */
+            }
+            for (size_t i = 0; i < e.size(); i++)
+            {
+                delete e.at(i);
+                /* code */
+            }
+            v.clear();
+            e.clear();
+            for (size_t i = 0; i < g.v.size(); i++)
+            {
+                v.push_back(new Vertex(g.v.at(i)->label));
+                /* code */
+            }
+            for (size_t i = 0; i < g.e.size(); i++)
+            {
+                Edge *newEdge = new Edge(g.e.at(i)->v1, g.e.at(i)->v2, g.e.at(i)->weight);
+                e.push_back(newEdge);
+                v.at(g.e.at(i)->v1->label)->edges.push_back(newEdge);
+                v.at(g.e.at(i)->v2->label)->edges.push_back(newEdge);
+                /* code */
+            }
         }
+        return *this;
     }
 
     void insertVertex(int label)
@@ -148,6 +200,7 @@ private:
         for (int i = 0; i < v.size(); i++)
         {
             v[i]->visited = false;
+            v[i]->pathTo = vector<Vertex *>();
             v[i]->distanceTo = numeric_limits<float>::max();
         }
     }
